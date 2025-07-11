@@ -17,22 +17,30 @@ def dashboard(request):
 
 @login_required(login_url='login')
 def budget_dashboard(request):
-    if request.method == 'POST':
-        form = ExpenseForm(request.POST)
-        if form.is_valid():
-            expense = form.save(commit=False)
-            expense.user = request.user
-            expense.save()
-            messages.success(request, "Expense added successfully.")
-            return redirect('budget_dashboard')
-    else:
-        form = ExpenseForm()
-    expenses = Expense.objects.filter(user=request.user).order_by('-date')
-    total = sum(exp.price for exp in expenses)
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    show_total = False
+    total = 0
+    if start_date and end_date:
+        # Only show total if both dates are set and user clicked Calculate
+        from datetime import datetime
+        try:
+            start = datetime.strptime(start_date, "%Y-%m-%d").date()
+            end = datetime.strptime(end_date, "%Y-%m-%d").date()
+            items = WarrantyItem.objects.filter(
+                user=request.user,
+                purchase_date__range=[start, end]
+            )
+            total = sum(item.price for item in items)
+            show_total = True
+        except Exception:
+            total = 0
+            show_total = True
     return render(request, 'budget_dashboard.html', {
-        'form': form,
-        'expenses': expenses,
+        'start_date': start_date,
+        'end_date': end_date,
         'total': total,
+        'show_total': show_total,
     })
 
 @login_required(login_url='login')

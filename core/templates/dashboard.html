@@ -14,19 +14,12 @@
   {% endfor %}
 {% endif %}
 
-{# Upload button at top left, outside container #}
 <div class="container mt-4">
-    <div class="row">
-        <div class="col text-start">
-            <a href="{% url 'upload_warranty' %}" class="btn btn-success mb-4">+ Upload Warranty</a>
-        </div>
-    </div>
 
-<div class="container mt-4">
     <div class="text-center mt-5">
         <h1 class="display-4 mb-3">Welcome, {{ user.username|capfirst }}!</h1>
         <p class="lead mb-4">This is your personal dashboard.<br>Start adding receipts and warranties to track them all in one place.</p>
-        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-lg">Go to Homepage</a>
+        <a href="{% url 'upload_warranty' %}" class="btn btn-success btn-lg">+ Upload Warranty</a>
     </div>
     <hr>
     <h3 class="mt-5">Your Uploaded Warranties</h3>
@@ -37,6 +30,7 @@
                 <th>Product Type</th>
                 <th>Purchase Date</th>
                 <th>Warranty Duration</th>
+                <th>Price</th>
                 <th>Receipt</th>
             </tr>
         </thead>
@@ -54,6 +48,9 @@
                     {% endif %}
                 </td>
                 <td>
+                    ${{ item.price|floatformat:2 }}
+                </td>
+                <td>
                     {% if item.receipt_file %}
                         <a href="{{ item.receipt_file.url }}" target="_blank">View Receipt</a>
                     {% else %}
@@ -63,7 +60,7 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="5" class="text-center">No warranties uploaded yet.</td>
+                <td colspan="6" class="text-center">No warranties uploaded yet.</td>
             </tr>
             {% endfor %}
         </tbody>

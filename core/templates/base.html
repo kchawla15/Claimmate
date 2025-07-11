@@ -7,6 +7,12 @@
     <style>
         body, html { height: 100%; }
         main { min-height: 70vh; }
+        .footer {
+            bottom: 0;
+            width: 100%;
+            z-index: 1030;
+            position: relative;
+        }
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -16,24 +22,25 @@
     <div class="container">
         <a class="navbar-brand fw-bold" href="/">ClaimMate NZ</a>
         <div class="collapse navbar-collapse">
-<ul class="navbar-nav me-auto">
-    {% if user.is_authenticated %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
-        </li>
-    {% else %}
-        <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
-        </li>
-    {% endif %}
-    <li class="nav-item">
-        <a class="nav-link" href="#">Privacy</a>
-{% if user.is_authenticated %}
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'budget_dashboard' %}">Budget Dashboard</a>
-    </li>
-{% endif %}
-</ul>
+            <ul class="navbar-nav me-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Privacy</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'budget_dashboard' %}">Budget Calculator</a>
+                    </li>
+                {% endif %}
+            </ul>
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item align-items-center d-flex">
@@ -56,14 +63,14 @@
 </nav>
 
 <!-- Main content block -->
-<main class="flex-fill d-flex align-items-center justify-content-center">
+<main class="flex-fill">
     <div class="container">
         {% block content %}
         {% endblock %}
     </div>
 </main>
 
-<footer class="footer mt-auto py-3 bg-light text-center">
+<footer class="footer bg-light text-center mt-auto">
     <div class="container">
         <span class="text-muted">&copy; 2025 ClaimMate NZ - <a href="#">Privacy</a></span>
     </div>
