@@ -8,7 +8,7 @@ class WarrantyItem(models.Model):
     warranty_duration_days = models.PositiveIntegerField(null=True, blank=True)
     purchase_date = models.DateField()
     receipt_file = models.FileField(upload_to='receipts/', null=True, blank=True)
-
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def expiry_date(self):
         if self.warranty_duration_days and self.purchase_date:
@@ -18,3 +18,13 @@ class WarrantyItem(models.Model):
 
     def __str__(self):
         return f"{self.store_name} - {self.product_type}"
+
+class Expense(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    category = models.CharField(max_length=100)
+    description = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def __str__(self):
+        return f"{self.date} - {self.category} - {self.price}"
