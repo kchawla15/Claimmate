@@ -22,3 +22,6 @@ venv/
 
 # Ignore egg-info
 *.egg-info/
+
+# Don't ignore SQLite
+!db.sqlite3
